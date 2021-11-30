@@ -9,32 +9,35 @@ import javax.inject.Inject;
 @ApplicationScoped
 public class Conversions {
 
+    private static final String GRPKEY =
+            "AwAwAAAAbpYmcOEapyBIWn55+VMnIu8RgbUB4+qOxwruMO2izjU1Xhk5RJIhmb9j4HpAS32ZYAAA\n" +
+            "ADme3GywvNHxmOj2Ec2x23rqPGMX+gU14yuM/WqTPis2b66DdmcH+h9yHxAneOUUGDQcZCSzPNlq\n" +
+            "7Nba3Bp/8avK23V/fXbO+LU1bMkH6K1KOJcL3MD3yrKezykv2oRgmTAAAACUnMUdYtck4dg6kg/S\n" +
+            "keybnG0BrC2Y+iZ1ZS2GVDMp94z3PjapltvIfjqR8B6yXgUwAAAAPPzAVL3JiLRoXdwuhh9+uFFy\n" +
+            "qaNU0sswuiJyGmnJjGLlCiSodF6NQa1kdcUS3ySTMAAAAP1067s7icCrHdcAB5a27Je+0Qe2BwRL\n" +
+            "wQfwZ8cI8B4CH3fhhtvhshxrSbZwTeqBiTAAAACfvkEuUOVW7t9DrTsM2NMz+A86OgzLs3LyiJKz\n" +
+            "2co+GHCSc2aOxIl3PDcUXFKZiRAwAAAAcw3PI87ZzooEhGrg3d5g/k6s1PoZuuLxGiyblBDp0+AG\n" +
+            "QiDFIlHuN48LkaBEZWwGYAAAAIxIOfVcAeBsiY6MbBVRSOaZBZy+2o6Dq/jd/0QDE838D39lZPGa\n" +
+            "nRxpb2wLpfFrCQzNoTQ8cuHEBQX6V7gjIIJkPymgYkWC2RoKrRTPwKXBGamiDyHkJsJ/WyNTKceW\n" +
+            "FTAAAADx7HRfBQSDp4oJtiCK6kCAs8cdZ6tTtrUsTr6ACjl2AVeCtxl9lFx47G8KM/WIOhUwAAAA\n" +
+            "5IQOJ2qNbpie76hr+Ijhqd51R+UbV/jHdFgCRfBmqsEpcMv2qw2cUbmHWkdg5ZgN";
+    private static final String BLDPUBKEY =
+            "AwMwAAAAnSePXpmLifJZmZ96mAwNgVGFb2oBaQffRo+TcTjoiXi5CgR2rk/UqwA8S0HUCGAYAAAA\n" +
+            "AA==";
+
     @Inject
     CacheRepository cacheRepository;
-
-    private final String bldPubKey =
-            "AwMwAAAAOJy2Da/rC6iJr6Yle/FOVsqf5IRU8X0BnWv65QEHD+zPzLU+o90BMSv60+EbhvmJAAAAAA==";
-    private final String grpKey =
-            "AwAwAAAAkY4aevm4rC2Gf/OKQ5q+0FHoq+77KJ+nEVX4CidY/LMp+g2nHIqMzRa/vWtz+B4ZYAAA" +
-            "AICzmyuvL/SmsNZ1b4IY/wcJ1MasBOtpf/Aus7Jg73b4grJFaqu6nG4TfA2OR2DLBZOu28Dmzga2" +
-            "w9HHoDBYnJZB1X9oIlRF8Q1nbrAZNXtQb19UahAdhoKcFyCBfJbblTAAAADceh8hWyORaiusnn62" +
-            "B1tBkhLTpJfofZLTG3D+3uGN5WCmC8htEeYieAjVYHW3TZUwAAAAbwOIL5CYTfluKgYAnbWSN1XQ" +
-            "FmC/KqwCdb5ZXH+Jjslz8rqUWzNjZJLOCrhvy9OUMAAAAFc+/z8u1MjkKr39BfHFMwdnJ2pY0poh" +
-            "DGth86aR774lkEgFA6cQo/4T/76aWb8xCzAAAADYD3teB08gV11HDvUdEjRrBM/e2H4k0PjWfGKL" +
-            "iiv5VNL59eoklNIXtiWVmic8m5YwAAAAH8F1ZdS0tLcdQ6Tks1rAw/EvFyU1n9vPg7Ixy0ZZeMiK" +
-            "hr2fiAhdEPu51h9P9uUZYAAAACHrlGU5AGvkxmXZg0QjQfF/cnQvHHpeP22L0+pos/61CcDYVbkT" +
-            "XR9UsHI/U4iQFKP4z1wHwatzUWoyS2MnH+XgwRsJ8PAVa6dcc56Qiptw6g6pWR4loHMniQzyHoZP" +
-            "GTAAAACyiH8hTL5E69uko+kDFvLiJzt16Sn+j61n74H0Sl5DrACyfhocgBaWx41OwHgxxRgwAAAA" +
-            "NalzJL+TAQea0CWs4ZnfUt/6LsF9un0HIKoE0zOGi4k/EvLGf4UeqMcannuburmZ";
-    private final String cnvKey =
-            "AwEAAAAAIAAAACEJnWEnuF8saHqNIa5Hg8iqnS5/fiz3exbZ72/tXgASIAAAAGIAHHsRw2EU8JyK" +
-            "wQEhaTVQ/X8oolm+ird60HnuLNQ0";
 
     Conversions() {}
 
     public Dictionary<String,String> convert(List<String> pseudonyms) {
 
         try {
+            GL19 converter = new GL19();
+            GrpKey grpKey = new GrpKey(GS.GL19_CODE, GRPKEY);
+            BldKey bldKey = new BldKey(GS.GL19_CODE, BLDPUBKEY);
+            converter.setup(grpKey);
+
             Dictionary<String, String> results = new Hashtable<>();
 
             for (String p : pseudonyms) {
@@ -42,15 +45,15 @@ public class Conversions {
                 if (!(cachedValue.equals(""))) {
                     results.put(p, cachedValue);
                 } else {
-                    //TODO Crypto
-                    GL19 converter = new GL19();
-                    GrpKey groupKey = new GrpKey(GS.GL19_CODE, grpKey);
-                    converter.setup(groupKey);
-                    results.put(p, "converted");
-                    cacheRepository.set(p, "converted");
+                    BlindSignature pseudonym = new BlindSignature(GS.GL19_CODE, p);
+
+                    BlindSignature[] result = converter.convert( new BlindSignature[]{pseudonym}, bldKey);
+                    String value = result[0].export();
+
+                    results.put(p, value);
+                    cacheRepository.set(p, value);
                 }
             }
-
             return results;
         } catch (Exception e) {
             e.printStackTrace();

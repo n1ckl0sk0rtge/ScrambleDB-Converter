@@ -46,7 +46,3 @@ tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
     options.compilerArgs.add("-parameters")
 }
-
-tasks.withType<io.quarkus.gradle.tasks.QuarkusDev> {
-    setProperty("java.library.path", (project.projectDir.path + "/libs"))
-}

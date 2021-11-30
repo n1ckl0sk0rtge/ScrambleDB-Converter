@@ -20,7 +20,7 @@ public class CacheRepository {
     @Inject
     ReactiveRedisClient reactiveRedisClient;
 
-    private static final Integer CACHE_TIME = 120;
+    private static final Integer CACHE_TIME = 1200;
 
     Uni<Void> del(String key) {
         return reactiveRedisClient.del(List.of(key))
