@@ -17,15 +17,14 @@ dependencies {
 
     implementation("io.quarkus:quarkus-arc:2.4.2.Final")
 
-    implementation("io.quarkus:quarkus-resteasy:2.4.2.Final")
-    implementation("io.quarkus:quarkus-smallrye-openapi:2.5.0.Final")
+    implementation("io.quarkus:quarkus-resteasy:2.5.0.Final")
+    implementation("io.quarkus:quarkus-resteasy-mutiny:2.5.0.Final")
     implementation("io.quarkus:quarkus-resteasy-jackson:2.5.0.Final")
-    implementation("io.quarkus:quarkus-resteasy-mutiny-deployment:2.5.0.Final")
+    //implementation("io.quarkus:quarkus-resteasy-mutiny-deployment:2.5.0.Final")
+    implementation("io.quarkus:quarkus-smallrye-openapi:2.5.0.Final")
 
-    implementation("io.quarkus:quarkus-datasource:2.5.0.Final")
-    implementation("io.quarkus:quarkus-agroal:2.5.0.Final")
-    implementation("io.quarkus:quarkus-jdbc-mysql:2.5.0.Final")
-
+    implementation("io.quarkus:quarkus-reactive-mysql-client:2.5.0.Final")
+    //implementation("io.quarkus:quarkus-reactive-mysql-client-deployment:2.5.0.Final")
     implementation("io.quarkus:quarkus-redis-client:2.4.2.Final")
 
     implementation(files("libs/libjgroupsig-1.1.0.jar"))

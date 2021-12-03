@@ -1,7 +1,5 @@
 package com.ibm.converter.service;
 
-import io.agroal.api.AgroalDataSource;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.sql.*;
@@ -11,14 +9,11 @@ import java.util.List;
 @Singleton
 public class TableRepository {
 
-    @Inject
-    AgroalDataSource dataSource;
-
     private static final String SCRAMBLED_TABLE_SEPARATOR = "_";
 
     public TableRepository() {  }
 
-    public List<String> getTable(String tableName) {
+    /*public List<String> getTable(String tableName) {
         try {
             Connection connection = dataSource.getConnection();
 
@@ -50,7 +45,7 @@ public class TableRepository {
             e.printStackTrace();
             return List.of("");
         }
-    }
+    }*/
 
 
 }
