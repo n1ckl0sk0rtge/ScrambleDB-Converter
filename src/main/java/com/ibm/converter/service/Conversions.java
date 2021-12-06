@@ -24,7 +24,11 @@ public class Conversions {
                         Uni.join().first(
                             cacheRepository.get(pseudonym),
                             cryptoRepository.runCryptoOperation(pseudonym))
-                        .toTerminate().onItem().transform(
+                        .toTerminate()
+                        .onItem().call(
+                                bldKey -> cacheRepository.set(pseudonym, bldKey)
+                        )
+                        .onItem().transform(
                                 bldKey -> new ConversionResponse(pseudonym, bldKey)
                         )
                     );

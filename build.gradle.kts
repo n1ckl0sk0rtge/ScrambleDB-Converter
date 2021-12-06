@@ -15,21 +15,20 @@ val quarkusPlatformVersion: String by project
 dependencies {
     implementation(enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}"))
 
-    implementation("io.quarkus:quarkus-arc:2.4.2.Final")
+    implementation("io.quarkus:quarkus-arc:2.5.0.Final")
 
     implementation("io.quarkus:quarkus-resteasy:2.5.0.Final")
     implementation("io.quarkus:quarkus-resteasy-mutiny:2.5.0.Final")
     implementation("io.quarkus:quarkus-resteasy-jackson:2.5.0.Final")
-    //implementation("io.quarkus:quarkus-resteasy-mutiny-deployment:2.5.0.Final")
     implementation("io.quarkus:quarkus-smallrye-openapi:2.5.0.Final")
 
     implementation("io.quarkus:quarkus-reactive-mysql-client:2.5.0.Final")
-    //implementation("io.quarkus:quarkus-reactive-mysql-client-deployment:2.5.0.Final")
     implementation("io.quarkus:quarkus-redis-client:2.4.2.Final")
 
     implementation(files("libs/libjgroupsig-1.1.0.jar"))
+    implementation(files("usr/local/lib/libjnigroupsig.so"))
 
-    testImplementation("io.quarkus:quarkus-junit5:2.4.2.Final")
+    testImplementation("io.quarkus:quarkus-junit5:2.5.0.Final")
     testImplementation("io.rest-assured:rest-assured:4.4.0")
 }
 
