@@ -22,7 +22,6 @@ dependencies {
     implementation("io.quarkus:quarkus-resteasy-jackson:2.5.0.Final")
     implementation("io.quarkus:quarkus-smallrye-openapi:2.5.0.Final")
 
-    //implementation("io.quarkus:quarkus-reactive-mysql-client:2.5.0.Final")
     implementation("io.quarkus:quarkus-redis-client:2.4.2.Final")
 
     implementation(files("libs/(Un)linkablePseudonyms-1.0.jar"))

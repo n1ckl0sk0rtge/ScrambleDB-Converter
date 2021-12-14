@@ -6,10 +6,11 @@ import io.vertx.mutiny.redis.client.Response;
 
 import java.util.Arrays;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-@Singleton
+
+@ApplicationScoped
 public class CacheRepository {
 
     @Inject
@@ -17,13 +18,14 @@ public class CacheRepository {
 
     private static final Integer CACHE_TIME = 1200;
 
-    Uni<String> get(String key) {
-        Uni<Response> r = reactiveRedisClient.get(key);
-        return r.onItem().transform(Response::toString);
+    public Uni<Response> get(String key) {
+        return reactiveRedisClient.get(key);
     }
 
-    Uni<Void> set(String key, String value) {
-        return reactiveRedisClient.set(
-                Arrays.asList(key, value, "EX", CACHE_TIME.toString())).map(response -> null);
+    public Uni<String> set(String key, String value) {
+        return reactiveRedisClient.set(Arrays.asList(key, value))
+                .onItem().ifNotNull().transform(res -> value)
+                .onItem().ifNull().failWith(new Exception("[Error] Error while connection to Redis"));
+        //"EX", CACHE_TIME.toString())).map(response -> null);
     }
 }

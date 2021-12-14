@@ -23,7 +23,7 @@ public class CryptoRepository {
             ConfigProvider.getConfig().getValue("crypto.secretexponentsize", Integer.class);
 
     public PrivateKey sk;
-    private PublicKey pk;
+    public PublicKey pk;
 
     private final Base64.Encoder b64Encoder = Base64.getEncoder();
 
@@ -46,7 +46,7 @@ public class CryptoRepository {
         }
     }
 
-    Uni<String> getPseudonym(
+    public Uni<String> getPseudonym(
             String pseudonym,
             PRFSecretExponent context) {
         try {
@@ -64,7 +64,7 @@ public class CryptoRepository {
         }
     }
 
-    Uni<String> convert(
+    public Uni<String> convert(
             String pseudonym,
             PRFSecretExponent sourceContext,
             PRFSecretExponent targetContext) {

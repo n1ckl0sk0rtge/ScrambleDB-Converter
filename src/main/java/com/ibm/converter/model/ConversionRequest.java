@@ -7,8 +7,8 @@ import java.util.List;
 @RegisterForReflection
 public class ConversionRequest {
 
-    public String authToken;
-    public List<ConversionContext> conversionContext;
+    private String authToken;
+    private List<ConversionContext> conversionContext;
 
     ConversionRequest() {    }
 

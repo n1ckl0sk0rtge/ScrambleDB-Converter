@@ -11,12 +11,6 @@ import java.util.ArrayList;
 @ApplicationScoped
 public class Conversions {
 
-    @Inject
-    CryptoRepository cryptoRepository;
-
-    @Inject
-    CacheRepository cacheRepository;
-
     Conversions() {}
 
     public Multi<ConversionResponse> convert() {

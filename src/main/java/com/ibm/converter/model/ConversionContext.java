@@ -1,11 +1,13 @@
 package com.ibm.converter.model;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import java.util.List;
 
+@RegisterForReflection
 public class ConversionContext {
 
-    public String context;
-    public List<String> pseudonyms;
+    private String context;
+    private List<String> pseudonyms;
 
     ConversionContext() {  }
 
