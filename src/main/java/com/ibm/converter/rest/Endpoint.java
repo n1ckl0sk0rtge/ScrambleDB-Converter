@@ -3,8 +3,6 @@ package com.ibm.converter.rest;
 import com.ibm.converter.model.ConversionRequest;
 import com.ibm.converter.model.ConversionResponse;
 import com.ibm.converter.service.*;
-import io.smallrye.mutiny.Multi;
-import io.smallrye.mutiny.Uni;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
@@ -13,9 +11,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Path("/v1")
 @Tag(
@@ -25,11 +20,10 @@ import java.util.stream.Collectors;
 public class Endpoint {
 
     @Inject
-    AuthRepository authRepository;
-    @Inject
-    DataLakeRepository dataLakeRepository;
-    @Inject
     Conversions conversions;
+
+    @Inject
+    CryptoRepository cryptoRepository;
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -38,8 +32,12 @@ public class Endpoint {
             description = "Request the result of a conversion for a specific source"
     )
     @Path("convert/")
-    public Multi<ConversionResponse> convert(ConversionRequest request) {
-        return conversions.convert(dataLakeRepository.getPseudonyms(request.getTableName()));
+    //public Multi<ConversionResponse> convert(ConversionRequest request) {
+    public ConversionResponse convert(ConversionRequest request) {
+
+        System.out.println(request.getConversionContext().get(0).pseudonyms);
+
+        return new ConversionResponse("", "");
     }
 
 }

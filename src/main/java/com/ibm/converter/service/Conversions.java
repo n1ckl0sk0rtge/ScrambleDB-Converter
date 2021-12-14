@@ -6,6 +6,7 @@ import io.smallrye.mutiny.Uni;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.ArrayList;
 
 @ApplicationScoped
 public class Conversions {
@@ -18,12 +19,12 @@ public class Conversions {
 
     Conversions() {}
 
-    public Multi<ConversionResponse> convert(Multi<String> tableRelatedPseudonymStream) {
-        return tableRelatedPseudonymStream.onItem().transformToUniAndMerge(
+    public Multi<ConversionResponse> convert() {
+        /*return tableRelatedPseudonymStream.onItem().transformToUniAndMerge(
                     pseudonym ->
                         Uni.join().first(
                             cacheRepository.get(pseudonym),
-                            cryptoRepository.runCryptoOperation(pseudonym))
+                            cryptoRepository.convert(pseudonym))
                         .toTerminate()
                         .onItem().call(
                                 bldKey -> cacheRepository.set(pseudonym, bldKey)
@@ -31,7 +32,8 @@ public class Conversions {
                         .onItem().transform(
                                 bldKey -> new ConversionResponse(pseudonym, bldKey)
                         )
-                    );
+                    );*/
+        return Multi.createFrom().item(new ConversionResponse("",""));
     }
 
 

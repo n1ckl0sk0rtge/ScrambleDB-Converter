@@ -22,11 +22,10 @@ dependencies {
     implementation("io.quarkus:quarkus-resteasy-jackson:2.5.0.Final")
     implementation("io.quarkus:quarkus-smallrye-openapi:2.5.0.Final")
 
-    implementation("io.quarkus:quarkus-reactive-mysql-client:2.5.0.Final")
+    //implementation("io.quarkus:quarkus-reactive-mysql-client:2.5.0.Final")
     implementation("io.quarkus:quarkus-redis-client:2.4.2.Final")
 
-    implementation(files("libs/libjgroupsig-1.1.0.jar"))
-    implementation(files("usr/local/lib/libjnigroupsig.so"))
+    implementation(files("libs/(Un)linkablePseudonyms-1.0.jar"))
 
     testImplementation("io.quarkus:quarkus-junit5:2.5.0.Final")
     testImplementation("io.rest-assured:rest-assured:4.4.0")

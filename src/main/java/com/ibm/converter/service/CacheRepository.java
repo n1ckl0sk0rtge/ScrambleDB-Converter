@@ -1,12 +1,10 @@
 package com.ibm.converter.service;
 
-import io.quarkus.redis.client.RedisClient;
 import io.quarkus.redis.client.reactive.ReactiveRedisClient;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.redis.client.Response;
 
 import java.util.Arrays;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -18,11 +16,6 @@ public class CacheRepository {
     ReactiveRedisClient reactiveRedisClient;
 
     private static final Integer CACHE_TIME = 1200;
-
-    /*Uni<Void> del(String key) {
-        return reactiveRedisClient.del(List.of(key))
-                .map(response -> null);
-    }*/
 
     Uni<String> get(String key) {
         Uni<Response> r = reactiveRedisClient.get(key);
