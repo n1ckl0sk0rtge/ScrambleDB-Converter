@@ -26,6 +26,5 @@ public class CacheRepository {
         return reactiveRedisClient.set(Arrays.asList(key, value))
                 .onItem().ifNotNull().transform(res -> value)
                 .onItem().ifNull().failWith(new Exception("[Error] Error while connection to Redis"));
-        //"EX", CACHE_TIME.toString())).map(response -> null);
     }
 }

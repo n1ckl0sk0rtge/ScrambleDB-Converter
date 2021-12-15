@@ -22,7 +22,8 @@ dependencies {
     implementation("io.quarkus:quarkus-resteasy-jackson:2.5.0.Final")
     implementation("io.quarkus:quarkus-smallrye-openapi:2.5.0.Final")
 
-    implementation("io.quarkus:quarkus-redis-client:2.4.2.Final")
+    implementation("io.quarkus:quarkus-redis-client:2.5.0.Final")
+    implementation("redis.clients:jedis:4.0.0-rc2")
 
     implementation(files("libs/(Un)linkablePseudonyms-1.0.jar"))
 

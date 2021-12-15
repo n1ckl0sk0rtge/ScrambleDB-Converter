@@ -19,9 +19,6 @@ import java.util.Base64;
 @ApplicationScoped
 public class CryptoRepository {
 
-    private final int secretExponentSize =
-            ConfigProvider.getConfig().getValue("crypto.secretexponentsize", Integer.class);
-
     public PrivateKey sk;
     public PublicKey pk;
 

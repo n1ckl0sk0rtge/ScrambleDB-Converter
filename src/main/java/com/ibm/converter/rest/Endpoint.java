@@ -1,15 +1,14 @@
 package com.ibm.converter.rest;
 
 import com.ibm.converter.model.ConversionRequest;
-import com.ibm.converter.model.ConversionResponse;
 import com.ibm.converter.model.GenerationRequest;
 import com.ibm.converter.service.*;
 import com.ibm.unlinkablepseudonyms.PRFSecretExponent;
 import com.ibm.unlinkablepseudonyms.PRFSecureRandom;
-import com.ibm.unlinkablepseudonyms.Pseudonym;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.redis.client.Response;
+import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
@@ -18,11 +17,10 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.Base64;
 
-@Path("/v1")
+@Path("/api")
 @Tag(
-        name = "Version one api endpoint for Converter",
+        name = "Api endpoint for Converter",
         description = "This endpoint defines all available functionalities for the converter application."
 )
 public class Endpoint {
@@ -33,16 +31,19 @@ public class Endpoint {
     @Inject
     CacheRepository cacheRepository;
 
+    private final int secretExponentSize =
+            ConfigProvider.getConfig().getValue("crypto.secretexponentsize", Integer.class);
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(
             summary = "convert",
             description = "Request the result of a conversion for a specific source"
     )
-    @Path("convert/")
+    @Path("/convert")
     public Multi<String> convert(ConversionRequest request) {
         PRFSecretExponent newContext =
-                new PRFSecretExponent(new PRFSecureRandom(), 256);
+                new PRFSecretExponent(new PRFSecureRandom(), secretExponentSize);
 
         return Uni.createFrom().item(request)
             .onItem().transformToMulti(
@@ -69,13 +70,13 @@ public class Endpoint {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(
-            summary = "getPseudonym",
+            summary = "pseudonym",
             description = "Request the new pseudonym for a specific context"
     )
-    @Path("getPseudonym/")
+    @Path("/pseudonym")
     public Multi<String> getPseudonym(GenerationRequest request) {
         PRFSecretExponent context =
-                new PRFSecretExponent(new PRFSecureRandom(), 256);
+                new PRFSecretExponent(new PRFSecureRandom(), secretExponentSize);
 
         return Uni.createFrom().item(request)
             .onItem().transformToMulti(
@@ -83,7 +84,7 @@ public class Endpoint {
                     .onItem().transformToUniAndMerge(
                             input -> Uni.combine().all().unis(
                                     Uni.createFrom().item(input),
-                                    Uni.createFrom().item(new PRFSecretExponent(new PRFSecureRandom(), 256))
+                                    Uni.createFrom().item(new PRFSecretExponent(new PRFSecureRandom(), secretExponentSize))
                             ).asTuple()
                     )
                     .onItem().transformToUniAndMerge(
