@@ -5,8 +5,7 @@ import java.util.List;
 public class GenerationRequest {
 
     private String authToken;
-    private String context;
-    private List<String> payload;
+    private List<String> input;
 
     GenerationRequest() {}
 
@@ -14,11 +13,7 @@ public class GenerationRequest {
         return authToken;
     }
 
-    public String getContext() {
-        return context;
-    }
-
-    public List<String> getPayload() {
-        return payload;
+    public List<String> getInput() {
+        return input;
     }
 }

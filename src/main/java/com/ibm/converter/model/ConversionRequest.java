@@ -8,7 +8,7 @@ import java.util.List;
 public class ConversionRequest {
 
     private String authToken;
-    private List<ConversionContext> conversionContext;
+    private List<String> pseudonyms;
 
     ConversionRequest() {    }
 
@@ -16,8 +16,8 @@ public class ConversionRequest {
         return authToken;
     }
 
-    public List<ConversionContext> getConversionContext() {
-        return conversionContext;
+    public List<String> getPseudonyms() {
+        return pseudonyms;
     }
 }
 

@@ -26,6 +26,7 @@ public class CryptoRepository {
     public PublicKey pk;
 
     private final Base64.Encoder b64Encoder = Base64.getEncoder();
+    private final Base64.Decoder b64Decoder = Base64.getDecoder();
 
     CryptoRepository() {
         final String workdir_path =
@@ -53,7 +54,7 @@ public class CryptoRepository {
             return Uni.createFrom().item(
                 b64Encoder.encodeToString(
                     Pseudonym.generate(
-                            pseudonym.getBytes(),
+                            b64Decoder.decode(pseudonym),
                             context,
                             (RSAPublicKey) this.pk
                     )
@@ -71,7 +72,7 @@ public class CryptoRepository {
         try {
             return Uni.createFrom().item(
                     b64Encoder.encodeToString(
-                        Pseudonym.convert(pseudonym.getBytes(),
+                        Pseudonym.convert(b64Decoder.decode(pseudonym),
                                 sourceContext,
                                 targetContext,
                                 (RSAPrivateCrtKey) this.sk
