@@ -25,8 +25,11 @@ public class Init implements QuarkusApplication {
     @Override
     public int run(String... args) throws Exception {
         System.out.println("Check if directory exists...");
-        final String workdir_path =
+        String workdir_path =
                 ConfigProvider.getConfig().getValue("app.workdir.path", String.class);
+        if (!workdir_path.endsWith("/")) {
+            workdir_path += "/";
+        }
 
         if (Files.isDirectory(Paths.get(workdir_path), LinkOption.NOFOLLOW_LINKS)) {
             System.out.println("[INFO] directory found");

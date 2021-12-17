@@ -26,8 +26,12 @@ public class CryptoRepository {
     private final Base64.Decoder b64Decoder = Base64.getDecoder();
 
     CryptoRepository() {
-        final String workdir_path =
+        String workdir_path =
                 ConfigProvider.getConfig().getValue("app.workdir.path", String.class);
+        if (!workdir_path.endsWith("/")) {
+            workdir_path += "/";
+        }
+
         try {
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 
@@ -51,7 +55,7 @@ public class CryptoRepository {
             return Uni.createFrom().item(
                 b64Encoder.encodeToString(
                     Pseudonym.generate(
-                            b64Decoder.decode(pseudonym),
+                            pseudonym.getBytes(),
                             context,
                             (RSAPublicKey) this.pk
                     )
