@@ -48,7 +48,7 @@ public class Endpoint {
         return Uni.createFrom().item(request)
             .onItem().transformToMulti(
                 req -> Multi.createFrom().items(request.getPseudonyms().stream())
-                        .onItem().transformToUniAndMerge(
+                        .onItem().transformToUniAndConcatenate(
                                 pse -> Uni.combine().all().unis(
                                         Uni.createFrom().item(pse),
                                         cacheRepository.get(pse)
@@ -56,7 +56,7 @@ public class Endpoint {
                                                 .onItem().ifNull().failWith(new Exception("[Error]"))
                                 ).asTuple()
                         )
-                        .onItem().transformToUniAndMerge(
+                        .onItem().transformToUniAndConcatenate(
                                 tuple -> cryptoRepository.convert(
                                         tuple.getItem1(),
                                         new PRFSecretExponent(tuple.getItem2()),
@@ -81,13 +81,13 @@ public class Endpoint {
         return Uni.createFrom().item(request)
             .onItem().transformToMulti(
                 req -> Multi.createFrom().items(request.getInput().stream())
-                    .onItem().transformToUniAndMerge(
+                    .onItem().transformToUniAndConcatenate(
                             input -> Uni.combine().all().unis(
                                     Uni.createFrom().item(input),
                                     Uni.createFrom().item(new PRFSecretExponent(new PRFSecureRandom(), secretExponentSize))
                             ).asTuple()
                     )
-                    .onItem().transformToUniAndMerge(
+                    .onItem().transformToUniAndConcatenate(
                             tuple -> cryptoRepository.getPseudonym(tuple.getItem1(), tuple.getItem2())
                                         .onItem().invoke(
                                             pse -> cacheRepository.set(pse, tuple.getItem2().asBase64()).await().indefinitely())
