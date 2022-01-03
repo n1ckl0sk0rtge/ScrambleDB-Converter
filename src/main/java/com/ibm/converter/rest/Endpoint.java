@@ -1,7 +1,6 @@
 package com.ibm.converter.rest;
 
-import com.ibm.converter.model.ConversionRequest;
-import com.ibm.converter.model.GenerationRequest;
+import com.ibm.converter.model.Payload;
 import com.ibm.converter.service.*;
 import com.ibm.unlinkablepseudonyms.PRFSecretExponent;
 import com.ibm.unlinkablepseudonyms.PRFSecureRandom;
@@ -26,13 +25,7 @@ import javax.ws.rs.core.MediaType;
 public class Endpoint {
 
     @Inject
-    CryptoRepository cryptoRepository;
-
-    @Inject
-    CacheRepository cacheRepository;
-
-    private final int secretExponentSize =
-            ConfigProvider.getConfig().getValue("crypto.secretexponentsize", Integer.class);
+    ServiceRepository serviceRepository;
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -41,29 +34,8 @@ public class Endpoint {
             description = "Request the result of a conversion for a specific source"
     )
     @Path("/convert")
-    public Multi<String> convert(ConversionRequest request) {
-        PRFSecretExponent newContext =
-                new PRFSecretExponent(new PRFSecureRandom(), secretExponentSize);
-
-        return Uni.createFrom().item(request)
-            .onItem().transformToMulti(
-                req -> Multi.createFrom().items(request.getPseudonyms().stream())
-                        .onItem().transformToUniAndConcatenate(
-                                pse -> Uni.combine().all().unis(
-                                        Uni.createFrom().item(pse),
-                                        cacheRepository.get(pse)
-                                                .onItem().ifNotNull().transform(Response::toString)
-                                                .onItem().ifNull().failWith(new Exception("[Error]"))
-                                ).asTuple()
-                        )
-                        .onItem().transformToUniAndConcatenate(
-                                tuple -> cryptoRepository.convert(
-                                        tuple.getItem1(),
-                                        new PRFSecretExponent(tuple.getItem2()),
-                                        newContext
-                                )
-                        )
-            );
+    public Multi<String> convert(Payload request) {
+        return serviceRepository.convert(request);
     }
 
 
@@ -74,25 +46,8 @@ public class Endpoint {
             description = "Request the new pseudonym for a specific context"
     )
     @Path("/pseudonym")
-    public Multi<String> getPseudonym(GenerationRequest request) {
-        PRFSecretExponent context =
-                new PRFSecretExponent(new PRFSecureRandom(), secretExponentSize);
-
-        return Uni.createFrom().item(request)
-            .onItem().transformToMulti(
-                req -> Multi.createFrom().items(request.getInput().stream())
-                    .onItem().transformToUniAndConcatenate(
-                            input -> Uni.combine().all().unis(
-                                    Uni.createFrom().item(input),
-                                    Uni.createFrom().item(new PRFSecretExponent(new PRFSecureRandom(), secretExponentSize))
-                            ).asTuple()
-                    )
-                    .onItem().transformToUniAndConcatenate(
-                            tuple -> cryptoRepository.getPseudonym(tuple.getItem1(), tuple.getItem2())
-                                        .onItem().invoke(
-                                            pse -> cacheRepository.set(pse, tuple.getItem2().asBase64()).await().indefinitely())
-                    )
-            );
+    public Multi<String> getPseudonym(Payload request) {
+        return serviceRepository.getPseudonym(request);
     }
 
 }
