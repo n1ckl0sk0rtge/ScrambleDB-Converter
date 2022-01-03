@@ -33,7 +33,7 @@ The application exposes an api with two endpoints. This is always the case and b
 | Endpoint           | Description                                                                                                                                         |
 |--------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
 | [/api/pseudonym]() | by accessing this endpoint the convert will generate new pseudonyms for the given input.                                                            |
-| [/api/convert]()   | the converter will convert the given pseudonyms in so-called identities, which have he propertied to be the same for the same input (NOT pseudonym) | 
+| [/api/convert]()   | the converter will convert the given pseudonyms in so-called identities, which have the property to be identical for the same input (NOT pseudonym) | 
 
 ### Generate Pseudonyms
 
