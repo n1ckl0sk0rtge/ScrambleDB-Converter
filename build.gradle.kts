@@ -15,22 +15,22 @@ val quarkusPlatformVersion: String by project
 dependencies {
     implementation(enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}"))
 
-    implementation("io.quarkus:quarkus-arc:2.6.1.Final")
+    implementation("io.quarkus:quarkus-arc")
 
-    implementation("io.quarkus:quarkus-resteasy:2.6.1.Final")
-    implementation("io.quarkus:quarkus-resteasy-mutiny:2.6.1.Final")
-    implementation("io.quarkus:quarkus-resteasy-jackson:2.6.1.Final")
-    implementation("io.quarkus:quarkus-smallrye-openapi:2.6.1.Final")
+    implementation("io.quarkus:quarkus-resteasy")
+    implementation("io.quarkus:quarkus-resteasy-mutiny")
+    implementation("io.quarkus:quarkus-resteasy-jackson")
+    implementation("io.quarkus:quarkus-smallrye-openapi")
 
-    implementation("io.quarkus:quarkus-smallrye-reactive-messaging-kafka:2.6.1.Final")
+    //implementation("io.quarkus:quarkus-smallrye-reactive-messaging-kafka")
 
-    implementation("io.quarkus:quarkus-redis-client:2.6.1.Final")
-    implementation("redis.clients:jedis:4.0.0")
+    implementation("io.quarkus:quarkus-redis-client")
+    implementation("redis.clients:jedis:4.0.1")
 
     implementation(files("libs/(Un)linkablePseudonyms-1.0.jar"))
 
-    testImplementation("io.quarkus:quarkus-junit5:2.6.1.Final")
-    testImplementation("io.rest-assured:rest-assured:4.4.0")
+    testImplementation("io.quarkus:quarkus-junit5")
+    testImplementation("io.rest-assured:rest-assured:4.5.0")
 }
 
 group = "com.ibm.converter"

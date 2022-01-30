@@ -4,6 +4,7 @@ import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.QuarkusApplication;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.microprofile.config.ConfigProvider;
+import org.jboss.logging.Logger;
 import redis.clients.jedis.Jedis;
 
 import java.io.File;
@@ -22,9 +23,11 @@ import java.security.spec.X509EncodedKeySpec;
 
 public class Init implements QuarkusApplication {
 
+    private static final Logger LOG = Logger.getLogger(Init.class);
+
     @Override
     public int run(String... args) throws Exception {
-        System.out.println("Check if directory exists...");
+        LOG.info("Check if directory exists...");
         String workdir_path =
                 ConfigProvider.getConfig().getValue("app.workdir.path", String.class);
         if (!workdir_path.endsWith("/")) {
@@ -32,24 +35,24 @@ public class Init implements QuarkusApplication {
         }
 
         if (Files.isDirectory(Paths.get(workdir_path), LinkOption.NOFOLLOW_LINKS)) {
-            System.out.println("[INFO] directory found");
+            LOG.info("directory found");
         } else {
-            throw new Exception("[Error] could not find directory " + workdir_path +
+            throw new Exception("Error: could not find directory " + workdir_path +
                     ". Make sure directory exists.");
         }
 
-        System.out.println("Starting with initializing crypto...");
+        LOG.info("Starting with initializing crypto...");
         final int keySize =
                 ConfigProvider.getConfig().getValue("crypto.keysize", Integer.class);
 
         File sk = new File(workdir_path + ".rsa");
         File pk = new File(workdir_path + ".rsapub");
         if (!(sk.exists() || pk.exists())) {
-            System.out.println("[Info] No keypair found.");
-            System.out.println("[Info] Start creating new pair...");
+            LOG.warn("No keypair found.");
+            LOG.info("Start creating new pair...");
             initKeys(keySize, workdir_path);
         } else {
-            System.out.println("[Info] Existing keypair found");
+            LOG.info("Existing keypair found");
 
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             byte[] b_pk = IOUtils.toByteArray(new FileInputStream(workdir_path + ".rsapub"));
@@ -57,13 +60,13 @@ public class Init implements QuarkusApplication {
             int keyLength = ((RSAPublicKey) keyFactory.generatePublic(publicKeySpec)).getModulus().bitLength();
 
             if (keySize != keyLength) {
-                throw new Exception("[Error] recognised difference between configured " +
+                throw new Exception("Error: recognised difference between configured " +
                         "key size and actual key size. \n Make sure to backup and remove " +
                         "the stored keys to continue");
             }
         }
 
-        System.out.println("[Info] Try to connect to redis instance...");
+        LOG.info("Try to connect to redis instance...");
 
         final String redisUrl =
                 ConfigProvider.getConfig().getValue("quarkus.redis.hosts", String.class);
@@ -72,13 +75,13 @@ public class Init implements QuarkusApplication {
         try {
             Jedis jedis = new Jedis(redisUrl);
             jedis.auth(redisAuth);
-            System.out.println("[Info] Connection to redis instance established!");
+            LOG.info("Connection to redis instance established!");
         } catch (Exception e ) {
-            System.out.println("[Error] Could not establish connection to the redis instance");
+            LOG.error("Could not establish connection to the redis instance");
             throw e;
         }
 
-        System.out.println("[Info] Init done!");
+        LOG.info("Init done!");
         Quarkus.waitForExit();
         return 0;
     }
@@ -98,9 +101,9 @@ public class Init implements QuarkusApplication {
                     prfPair.getPublic().getEncoded());
             fos = new FileOutputStream(workdir_path + ".rsapub");
             fos.write(x509ks.getEncoded());
-            System.out.println("[Info] New pair created!");
+            LOG.info("New pair created!");
         } catch (Exception e) {
-            System.out.println("[Error] Error while creating new keypair");
+            LOG.error("Error while creating new keypair");
             e.printStackTrace();
         }
     }
