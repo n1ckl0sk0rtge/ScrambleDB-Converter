@@ -25,6 +25,9 @@ public class CryptoRepository {
     private final Base64.Encoder b64Encoder = Base64.getEncoder();
     private final Base64.Decoder b64Decoder = Base64.getDecoder();
 
+    private final int secretExponentSize =
+            ConfigProvider.getConfig().getValue("crypto.secretexponentsize", Integer.class);
+
     CryptoRepository() {
         String workdir_path =
                 ConfigProvider.getConfig().getValue("app.workdir.path", String.class);
@@ -46,6 +49,10 @@ public class CryptoRepository {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public PRFSecretExponent getNewSecretExponent() {
+        return new PRFSecretExponent(secretExponentSize, (RSAPrivateCrtKey) sk);
     }
 
     public Uni<String> getPseudonym(

@@ -2,11 +2,9 @@ package com.ibm.converter.service;
 
 import com.ibm.converter.model.Payload;
 import com.ibm.unlinkablepseudonyms.PRFSecretExponent;
-import com.ibm.unlinkablepseudonyms.PRFSecureRandom;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.redis.client.Response;
-import org.eclipse.microprofile.config.ConfigProvider;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -20,12 +18,8 @@ public class ServiceRepository {
     @Inject
     CacheRepository cacheRepository;
 
-    private final int secretExponentSize =
-            ConfigProvider.getConfig().getValue("crypto.secretexponentsize", Integer.class);
-
     public Multi<String> convert(Payload request) {
-        PRFSecretExponent newContext =
-                new PRFSecretExponent(new PRFSecureRandom(), secretExponentSize);
+        PRFSecretExponent newContext = cryptoRepository.getNewSecretExponent();
 
         return Uni.createFrom().item(request)
                 .onItem().transformToMulti(
@@ -56,7 +50,7 @@ public class ServiceRepository {
                                 .onItem().transformToUniAndConcatenate(
                                         input -> Uni.combine().all().unis(
                                                 Uni.createFrom().item(input),
-                                                Uni.createFrom().item(new PRFSecretExponent(new PRFSecureRandom(), secretExponentSize))
+                                                Uni.createFrom().item(cryptoRepository.getNewSecretExponent())
                                         ).asTuple()
                                 )
                                 .onItem().transformToUniAndConcatenate(

@@ -25,12 +25,12 @@ dependencies {
     //implementation("io.quarkus:quarkus-smallrye-reactive-messaging-kafka")
 
     implementation("io.quarkus:quarkus-redis-client")
-    implementation("redis.clients:jedis:4.0.1")
+    implementation("redis.clients:jedis:4.1.1")
 
-    implementation(files("libs/(Un)linkablePseudonyms-1.0.jar"))
+    implementation(files("libs/(Un)linkablePseudonyms-1.1.jar"))
 
     testImplementation("io.quarkus:quarkus-junit5")
-    testImplementation("io.rest-assured:rest-assured:4.5.0")
+    testImplementation("io.rest-assured:rest-assured:4.5.1")
 }
 
 group = "com.ibm.converter"
