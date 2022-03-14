@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: converter
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: converter
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: converter
+    spec:
+      containers:
+      - image: image-registry.openshift-image-registry.svc:5000/masterthesis/converter:{{ .Values.converter.version }}
+        name: converter
+        imagePullPolicy: Always
+        env:
+        - name: REDIS_HOST
+          value: redis:6379
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: converter-secret
+              key: redisPassword
+        ports:
+        - containerPort: 8080
+          name: converter
+          protocol: TCP
+        resources:
+          requests:
+            memory: "250Mi"
+            cpu: "250m"
+          limits:
+            memory: "500Mi"
+            cpu: "500m"
+        volumeMounts:
+        - mountPath: /data
+          name: converter-volume
+      volumes:
+      - name: converter-volume
+        persistentVolumeClaim:
+          claimName: converter-pvc
+
+          
