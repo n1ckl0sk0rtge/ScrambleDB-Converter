@@ -15,18 +15,7 @@ The root directory of this project contains a predefined Dockerfile for building
 docker build -t converter:latest .
 ```
 
-## Using the Converter with KAFKA
-
-To allow the converter to response to requests through Kafka the following environment variables have to be configured.
-
-| Environment variable      | Description                                                                                                                                                                                                                                  |
-|---------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `KAFKA_BOOTSTRAP_SERVERS` | A string of all relevant kafka bootstrap servers. The default value is `localhost:9092`                                                                                                                                                      |
-| `KAFKA_TOPIC`             | The name of the topic the converter should subscribe and listen on. The default value is `scrambleDB`. Depending on the Kafka configuration this topic has to be created before is can be used or it will be created automatically by kafka. |
-
-If configured the converter will listen on request from the scrambleDB driver and automatically response to them.
-
-## Using the Converter with REST
+## Using the Converter
 
 The application exposes an api with two endpoints. This is always the case and by that it is the default way to communicate to the converter.
 
