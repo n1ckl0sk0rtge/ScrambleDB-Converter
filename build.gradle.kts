@@ -27,7 +27,7 @@ dependencies {
     implementation("io.quarkus:quarkus-redis-client")
     implementation("redis.clients:jedis:4.1.1")
 
-    implementation(files("libs/(Un)linkablePseudonyms-1.1.jar"))
+    implementation(files("libs/(Un)linkablePseudonyms-1.2.jar"))
 
     testImplementation("io.quarkus:quarkus-junit5")
     testImplementation("io.rest-assured:rest-assured:4.5.1")
