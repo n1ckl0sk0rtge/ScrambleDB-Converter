@@ -1,0 +1,74 @@
+{
+	"info": {
+		"_postman_id": "c310e5c7-289d-4cf9-b92c-fdfee0598c36",
+		"name": "unit test converter",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "k8s pseudonym",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"data\": [\n        \"lucas\",\n        \"lucas\",\n        \"max\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.64.3:8080/api/pseudonym",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"64",
+						"3"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"pseudonym"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "k8s convert",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"data\": [\n        \"Bao+mRiGHhAGgx5mx5rpREo8p5o3/sIiOHJfKsjDrFsCPzcjO319muEgVAUo3S9rpYjkJ/rG70q008tqL97KHGOITOfYBVqBEn4DNuK7LW4kl6Gv4jWdPmed3n4BEJ53SNhXcCUT2/jc1JMXBQZUV+2U9mruEtZ/bHcofbEaQHDBZxSdpMxH2Gf+fpPRRxSLuI9tMZrdD+fSOih91vQomD4HQOZgnTrY9QSEc8vlekaUI0MweV1kTx2Xwte570IZ6FEeZqZ0sgFgiceLkE9+JIMCgIIWiiZOUdYyUcSBMFGkX6hRcJcrVhwNOo1CKmjMuGKbMgM18jUAu4iTs7kqmw==\",\n        \"G9Ome80GyfpO7f/kcqnv93DmTjPGY8Sat7KdfFvwoY9D1b25wGRGYgb6RdP9/RZtkDsqHRY6sS/9X5yyrP9uxS8eFdZkUWvofUkou9oXfnGLZN+gx+ig1ma4niSnixBPh6nj/f1nymZfMKd9t2+NQGQqQjiMG4YF8qsd20lHJbdkpP+DsTUT5Y0K9Y3DlTvQAw0mlsnRfH9iRVv3Iw7IKq049nY1IE2h5XpmzGk6NFMV4gFZcCWT+JX+SsP12kTu18t8ViKz8T024DrCCLBxw05J118OWefk4gLABsUUqYQ0taYZJEc3owWm0Nk+1b1FiDX1Xggo5ytsfRVtJhzInA==\",\n        \"MkC+LtwGYnQzwL0ltBjoh8/j6cz3Gsjl6/vwqBb2KWP0yv24cQFBN8MybdKj86hdbHAw1Tma2j4YwR29uSD1jS/eDJa7Jy7KbkK2Qf2RURhXdsx1bfpuN3suWQBXy2i8Ar5WLmG5VAZKR1s6h1eooPaCj+oIeVw13z8qGwvU1AyDLZlYYwsNVvYCDYStru/fg6wZQ6yApQcgGeenm895O0tYxJ6KJF10iA75Ju/daDGWZzOsT5EiVhH9t0dc1O9RetTaxpOJX2n/0PKGu9Q0J68W3Fv/TSbDgzu6JSvr3BiP4b9WAEtOB/vPna+dl1zhInJNXUzn1Eu8Dsf1AIiDuQ==\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.64.3:8080/api/convert/",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"64",
+						"3"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"convert",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
